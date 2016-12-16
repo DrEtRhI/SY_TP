@@ -1,0 +1,23 @@
+Utilisation de fork+exec et d'un afficheur d'arguments de la ligne de commande
+******************************************************************************
+
+Compiler les programme
+make
+
+Lancer l'execution de echo_arg, avec ou sans arguments :
+Par exemple :
+
+./echo_arg
+
+./echo_arg 1 bonjour  a toi etudiant
+
+Lancer forker :
+
+./forker
+
+Afficher la liste des fichiers du répertoire :
+/bin/ls -a -i
+
+Modifier le programme forker pour qu'il execute la commande 
+/bin/ls -a -i au lieu de echo_arg.
+

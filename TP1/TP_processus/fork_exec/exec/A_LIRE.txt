@@ -1,0 +1,21 @@
+Observation du deroulement de l'appel systÃme exec
+
+1) GÃ©nÃ©rer et compiler les fichiers .c
+mandelbrot> make
+
+2) Observer le fichier aurevoir.c
+mandelbrot> more aurevoir.c     (ou observez-le avec nedit aurevoir.c &)
+
+3) Executer le fichier et observer le resultat. Regarder le PID, PPID et CMD
+mandelbreot> ./aurevoir
+
+4) Observer le fichier beau.c
+mandelbrot> more beau.c     
+
+5) Executer le fichier et observer le resultat. Observer que le PID et le PPID
+n'ont pas changÃ©.
+
+mandelbreot> ./beau
+
+6) MÃªme opÃ©ration avec les fichiers coucou et bonjour
+

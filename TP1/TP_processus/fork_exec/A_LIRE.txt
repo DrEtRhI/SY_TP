@@ -1,0 +1,16 @@
+Seance de decouverte des primitives fork et exec
+
+Extraire les fichiers de l'archive.
+
+Chaque repertoire contient un fichier A_LIRE (formats texte et en pdf)
+donnant les instructions a suivre.
+
+Passer dans l'ordre 
+
+exec
+fork
+forkps
+forkecho
+env
+
+Vous pouvez ensuite passer à la deuxième partie du TP Pascal.

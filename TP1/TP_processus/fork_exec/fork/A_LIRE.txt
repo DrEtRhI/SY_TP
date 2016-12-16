@@ -1,0 +1,35 @@
+Dmonstration de la primitive fork
+
+Compiler les exécutables par make
+
+Observer le code source dans coucou_pere_fils.c, notamment la fonction main.
+
+L'ordre dans lequel les appels de write par les deux processus n'est pas 
+déterministe et peut changer d'une exécution à une autre.
+
+Lancer plusieurs exécutions de l'exécutable coucou et observer que certaines ne 
+donnent pas le même résultat à l'affichage, comprendre et expliquer le 
+phénomène :
+
+./coucou
+./coucou
+...
+./coucou
+
+Le phénomène peut être plus difficile à mettre en évidence sur un pc sur lequel 
+vous êtes le seul utilisateur connecté que sur le serveur partagé mandelbrot : 
+utliser alors l'exécutable coucou2. 
+Dans coucou2, une temporisation de une microseconde entre deux appels de write 
+augmente la probabilité de commuation de processus entre les 2 écritures à
+l'écran.
+
+
+Lire le corps de main dans le fichier descoucous.c. 
+
+Combien de processus doit-il créer ?
+
+Vérifer et comprendre en exécutant (élargir au besoin la fenêtre du terminal
+pour que les lignes ne soient pas repliées).
+
+./descoucous
+

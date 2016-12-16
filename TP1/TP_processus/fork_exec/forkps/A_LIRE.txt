@@ -1,0 +1,29 @@
+Utilisation combinee de fork et exec
+************************************
+
+
+Generer l'executable monps :
+mandelbrot> make
+
+
+Executer la commande id pour connaitre votre USER_ID et GROUPE_ID
+mandelbrot> id
+
+Id vous retourne quelquechose du genre :
+uid=56802(grenierp)  gid=56802(grenierp)
+
+Retailler eventuellement la fenetre en largeur pour afficher des lignes longues
+
+Demander la liste des processus vous appartenant :
+mandelbrot> ps -u grenierp
+
+ou eventuellement
+mandelbrot> ps -u 56802 -w -l		/* remplacer 56802 par votre uid */
+
+
+Regarder le source monps.c
+
+Lancer l'executable et observer :
+mandelbrot> ./monps
+
+

@@ -1,0 +1,28 @@
+Observation de l'environnement.
+
+Compiler les deux programmes.
+mandelbrot2> make
+
+L'exécutable echoenv affiche les definitions de variables qu'il a recues
+dans le parametre envp de main. 
+
+Voir l'environnement actuel avec la commande interne env de l'interprete de
+commande :
+mandelbrot2> env
+
+Executer le programme echoenv que vous venez de compiler
+mandelbrot2> ./echoenv
+
+Definissez une nouvelle variable d'environnement. 
+
+mandelbrot>export ZZ=nouvelle_variable              (syntaxe Bourne pour bash)
+
+Executez a nouveau echoenv. Voyez-vous apparaitre ZZ ?
+mandelbrot> ./echoenv
+
+Le programme exporter ne passe qu'une partie du contenu de envp a
+l'executable passe en parametre, dont il lance l'execution par exec.
+Observer le fonctionnement
+mandelbrot> ./exporter ./echoenv
+
+
