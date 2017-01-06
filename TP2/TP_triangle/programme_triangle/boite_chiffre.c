@@ -63,7 +63,7 @@ void boite_chiffre (unsigned int taille_police, char *sortie,
   if (strcmp (sortie, "stdout") == 0) 
     fsortie = stdout;
   else {
-    fsortie = fopen (sortie, "w");
+    fsortie = fopen (sortie, "a");
     if (fsortie == NULL)
       erreur ("Impossible d'ouvrir le fichier en ecriture\n");
   }
