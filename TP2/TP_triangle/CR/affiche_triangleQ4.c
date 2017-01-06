@@ -92,7 +92,6 @@ void postscript_triangle (unsigned int taille_police)
 int main(int argc, char *argv[], char *envp[])
 {
 
-
 	char prog_suivant [] = "/usr/bin/gv";
 	char *arguments [] = {"gv","triangle.ps",NULL};
 	pid_t p;
@@ -101,7 +100,6 @@ int main(int argc, char *argv[], char *envp[])
   int status;
 	FILE *fsortie;
 
-
   lire_args(argc,argv,3,message_usage, 
         "%s",nom_executable,"",
         "%d",&taille_police,"taille_de_police_incorrecte",
@@ -109,7 +107,6 @@ int main(int argc, char *argv[], char *envp[])
 
   /* Ici il faudrait ajouter une verification des valeurs */
   /* de taille_police [8,24] et nb_lignes [1,MAX_LIGNES]  */
-
 
   sortie = "triangle.ps";
 	// blank the file
@@ -134,7 +131,6 @@ int main(int argc, char *argv[], char *envp[])
 	}
 
 	fprintf(stderr,"Generation et affichage du triangle de Pascal termines\n");
-
 
   return 0;
 }
