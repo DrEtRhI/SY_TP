@@ -92,16 +92,15 @@ void postscript_triangle (unsigned int taille_police)
 int main(int argc, char *argv[], char *envp[])
 {
 
-
 	char prog_suivant [] = "/usr/bin/gv";
 	char *arguments [] = {"gv","triangle.ps",NULL};
-	pid_t p;
+	pid_t p, gauche, droit;
   unsigned int taille_police, nb_lignes;
   char nom_executable[200];
   int status;
-	FILE *fsortie;
-
-
+	int t[2];
+	FILE* file;	
+	
   lire_args(argc,argv,3,message_usage, 
         "%s",nom_executable,"",
         "%d",&taille_police,"taille_de_police_incorrecte",
@@ -110,21 +109,28 @@ int main(int argc, char *argv[], char *envp[])
   /* Ici il faudrait ajouter une verification des valeurs */
   /* de taille_police [8,24] et nb_lignes [1,MAX_LIGNES]  */
 
+	// création du tube
+	pipe(t);
+	gauche = fork();
+	if (gauche < 0 ){
+		fprintf(stderr, "Creation du fils gauche impossible");	
+	} else if (gauche == 0){
+		
+		// Redirecton de la sortie standard du fils gauche sur l'entrée standard du tube
+		file = fdopen(t[1], "w");
+		// Execution du triangle
+	  sortie = "stdout";
+  	taille_triangle = nb_lignes;
+ 		postscript_triangle (taille_police);
 
-  sortie = "triangle.ps";
-	// blank the file
-	if (strcmp (sortie, "stdout") != 0) {
-		fsortie = fopen (sortie, "w");
-		fclose (fsortie);
 	}
-  taille_triangle = nb_lignes;
-  postscript_triangle (taille_police);
+
   //sleep (3);
 
 	p = fork();
 	if (p == 0){
 		execve (prog_suivant, arguments, envp);
-		/* On ne doit jamais arriver ici si execeve reussit */
+		/* On ne doit jamais arriver ici si execve reussit */
 		#ifdef PRINTERROR
    	printf ("%s\n",strerror (errno)); 
 		#endif
@@ -134,7 +140,6 @@ int main(int argc, char *argv[], char *envp[])
 	}
 
 	fprintf(stderr,"Generation et affichage du triangle de Pascal termines\n");
-
 
   return 0;
 }
