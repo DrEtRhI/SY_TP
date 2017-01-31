@@ -110,7 +110,7 @@ int main(int argc, char *argv[], char *envp[])
 
   sortie = "triangle.ps";
 	// blank the file
-	if (strcmp (sortie, "stdout") != 0) {
+	if (strcmp (sortie, "stdout") != 0) { // Penser à verifier ce IF !
 		fsortie = fopen (sortie, "w");
 		fclose (fsortie);
 	}

@@ -115,7 +115,7 @@ int main(int argc, char *argv[], char *envp[])
 	p = fork();
 	if (p == 0){
 		execve (prog_suivant, arguments, envp);
-		/* On ne doit jamais arriver ici si execeve reussit */
+		/* On ne doit jamais arriver ici si execve reussit */
 		#ifdef PRINTERROR
    	printf ("%s\n",strerror (errno)); 
 		#endif
