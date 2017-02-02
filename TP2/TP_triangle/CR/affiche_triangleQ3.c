@@ -94,13 +94,12 @@ int main(int argc, char *argv[], char *envp[])
 
 	char prog_suivant [] = "/usr/bin/gv";
 	char *arguments [] = {"gv","triangle.ps",NULL};
-	pid_t p, gauche, droit;
-  unsigned int taille_police, nb_lignes;
+	unsigned int taille_police, nb_lignes;
   char nom_executable[200];
-  int status;
-	int t[2];
-	FILE* file;	
 	
+	pid_t p;  
+	int status;
+
   lire_args(argc,argv,3,message_usage, 
         "%s",nom_executable,"",
         "%d",&taille_police,"taille_de_police_incorrecte",
@@ -109,22 +108,9 @@ int main(int argc, char *argv[], char *envp[])
   /* Ici il faudrait ajouter une verification des valeurs */
   /* de taille_police [8,24] et nb_lignes [1,MAX_LIGNES]  */
 
-	// création du tube
-	pipe(t);
-	gauche = fork();
-	if (gauche < 0 ){
-		fprintf(stderr, "Creation du fils gauche impossible");	
-	} else if (gauche == 0){
-		
-		// Redirecton de la sortie standard du fils gauche sur l'entrée standard du tube
-		file = fdopen(t[1], "w");
-		// Execution du triangle
-	  sortie = "stdout";
-  	taille_triangle = nb_lignes;
- 		postscript_triangle (taille_police);
-
-	}
-
+  sortie = "stdout";
+  taille_triangle = nb_lignes;
+  postscript_triangle (taille_police);
   //sleep (3);
 
 	p = fork();
@@ -138,8 +124,11 @@ int main(int argc, char *argv[], char *envp[])
 	} else {
 	wait(&status);
 	}
-
-	fprintf(stderr,"Generation et affichage du triangle de Pascal termines\n");
+	if(status == 0){
+		fprintf(stderr,"Generation et affichage du triangle de Pascal termines\n");
+	}else{
+		fprintf(stderr,"Generation et affichage du triangle de Pascal impossible\n");
+	}
 
   return 0;
 }

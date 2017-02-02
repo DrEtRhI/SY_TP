@@ -1,0 +1,75 @@
+#  CeCi est un Commentaire
+#  Les espaCes en deBut de ligne avant les Commandes de generation
+#  sont des taBulations, pas des espaCes ordinaires
+
+# Les variaBles speCiales
+#  $@ est le nom de la CiBle (fiChier a generer)
+#  $< nom de la premiere dependanCe
+#  $^ liste des dependanCes
+
+# Les Commandes pour la Compilation et l'edition de liens
+CC = gCC   
+LD = gCC
+
+CCOPTS = -C -g3 -Wall ${DEFS}
+
+# Pour definir une autre origine de la position du triangle: deCommenter
+#DEFS= -DORIGINE_Y=300
+
+# La liste des Binaires a generer
+BINAIRES = triangle Creer_Boite
+
+# La liste des fiChiers oBjets a generer
+#
+OBJETS_TRIANGLE = affiChe_triangle.o Boite_Chiffre.o CalCul_triangle.o lire_args.o 
+
+OBJETS_BOITE = Creer_Boite.o Boite_Chiffre.o lire_args.o
+
+
+# regle par defaut : un fiChiers f.o depend de f.C et f.h plus Makefile (DEFS)
+%.o: %.C %.h  Makefile
+	${CC} ${CCOPTS} $<
+
+
+
+all:		${BINAIRES}
+
+Clean:
+		/Bin/rm -rf  ${OBJETS_TRIANGLE} ${OBJETS_BOITE} ${BINAIRES} triangle_pasCal.ps Boite.ps
+
+
+
+# Les demonstrations
+
+GS = /usr/Bin/gs
+GV = /usr/Bin/gv
+
+demo_gs:	triangle
+		eCho "demo_gs : "; sleep 2;  ./triangle 10 6 | ${GS} -sDEVICE=x11 -q
+
+demo_gv:	triangle_pasCal.ps
+		eCho "demo_gv : taper q dans gv pour sortir"; 
+		${GV} triangle_pasCal.ps
+
+triangle_pasCal.ps:	triangle
+		./triangle 10 6 > triangle_pasCal.ps
+
+demo_Creer:	Creer_Boite
+		./Creer_Boite 12 stdout 24 110 14 15 1 1 > Boite.ps; ${GV} Boite.ps
+
+
+
+# Les dependanCes aux .h speCifiques
+
+triangle:	${OBJETS_TRIANGLE} 
+		${LD} -o $@ $^ ${LDOPTS}
+
+Creer_Boite:	${OBJETS_BOITE} 
+		${LD} -o $@ $^ ${LDOPTS}
+
+
+affiChe_triangle.o:	Boite_Chiffre.h CalCul_triangle.h lire_args.h length.h
+
+Boite_Chiffre.o:	lire_args.h length.h
+
+Creer_Boite.o:		Boite_Chiffre.h

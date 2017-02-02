@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #include "calcul_triangle.h"
 #include "boite_chiffre.h"
@@ -92,10 +94,12 @@ int main(int argc, char *argv[], char *envp[])
 
 	char prog_suivant [] = "/usr/bin/gv";
 	char *arguments [] = {"gv","triangle.ps",NULL};
-
-  unsigned int taille_police, nb_lignes;
+	unsigned int taille_police, nb_lignes;
   char nom_executable[200];
-  
+	
+	pid_t p;  
+	int status;
+
   lire_args(argc,argv,3,message_usage, 
         "%s",nom_executable,"",
         "%d",&taille_police,"taille_de_police_incorrecte",
@@ -109,12 +113,22 @@ int main(int argc, char *argv[], char *envp[])
   postscript_triangle (taille_police);
   //sleep (3);
 
-	execve (prog_suivant, arguments, envp);
+	p = fork();
+	if (p == 0){
+		execve (prog_suivant, arguments, envp);
+		/* On ne doit jamais arriver ici si execve reussit */
+		#ifdef PRINTERROR
+   	printf ("%s\n",strerror (errno)); 
+		#endif
+   	fprintf (stderr, "Je n'ai pas reussi a lancer l'execution du fichier %s",prog_suivant);
+	} else {
+	wait(&status);
+	}
+	if(status == 0){
+		fprintf(stderr,"Generation et affichage du triangle de Pascal termines\n");
+	}else{
+		fprintf(stderr,"Generation et affichage du triangle de Pascal impossible\n");
+	}
 
-	/* On ne doit jamais arriver ici si execeve reussit */
-	#ifdef PRINTERROR
-   printf ("%s\n",strerror (errno)); 
-	#endif
-   fprintf (stderr, "Je n'ai pas reussi a lancer l'execution du fichier %s",prog_suivant);
   return 0;
 }
