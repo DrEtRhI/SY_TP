@@ -100,6 +100,8 @@ int main(int argc, char *argv[], char *envp[])
 	pid_t p;  
 	int status;
 
+	FILE *fsortie;
+
   lire_args(argc,argv,3,message_usage, 
         "%s",nom_executable,"",
         "%d",&taille_police,"taille_de_police_incorrecte",
@@ -108,11 +110,17 @@ int main(int argc, char *argv[], char *envp[])
   /* Ici il faudrait ajouter une verification des valeurs */
   /* de taille_police [8,24] et nb_lignes [1,MAX_LIGNES]  */
 
-  sortie = "stdout";
+	sortie = "triangle.ps";  
+	fsortie = fopen (sortie, "w");
+  if (fsortie == NULL){
+    fprintf (stderr, "Impossible d'ouvrir le fichier en ecriture\n");
+  }
+	fclose (fsortie);
+
   taille_triangle = nb_lignes;
   postscript_triangle (taille_police);
   //sleep (3);
-
+	
 	p = fork();
 	if (p == 0){
 		execve (prog_suivant, arguments, envp);

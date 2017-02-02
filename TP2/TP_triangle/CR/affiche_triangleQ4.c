@@ -94,10 +94,12 @@ int main(int argc, char *argv[], char *envp[])
 
 	char prog_suivant [] = "/usr/bin/gv";
 	char *arguments [] = {"gv","triangle.ps",NULL};
-	pid_t p;
-  unsigned int taille_police, nb_lignes;
+	unsigned int taille_police, nb_lignes;
   char nom_executable[200];
-  int status;
+	
+	pid_t p;  
+	int status;
+
 	FILE *fsortie;
 
   lire_args(argc,argv,3,message_usage, 
@@ -108,20 +110,21 @@ int main(int argc, char *argv[], char *envp[])
   /* Ici il faudrait ajouter une verification des valeurs */
   /* de taille_police [8,24] et nb_lignes [1,MAX_LIGNES]  */
 
-  sortie = "triangle.ps";
-	// blank the file
-	if (strcmp (sortie, "stdout") != 0) { // Penser à verifier ce IF !
-		fsortie = fopen (sortie, "w");
-		fclose (fsortie);
-	}
+	sortie = "triangle.ps";  
+	fsortie = fopen (sortie, "w");
+  if (fsortie == NULL){
+    fprintf (stderr, "Impossible d'ouvrir le fichier en ecriture\n");
+  }
+	fclose (fsortie);
+
   taille_triangle = nb_lignes;
   postscript_triangle (taille_police);
   //sleep (3);
-
+	
 	p = fork();
 	if (p == 0){
 		execve (prog_suivant, arguments, envp);
-		/* On ne doit jamais arriver ici si execeve reussit */
+		/* On ne doit jamais arriver ici si execve reussit */
 		#ifdef PRINTERROR
    	printf ("%s\n",strerror (errno)); 
 		#endif
@@ -129,8 +132,11 @@ int main(int argc, char *argv[], char *envp[])
 	} else {
 	wait(&status);
 	}
-
-	fprintf(stderr,"Generation et affichage du triangle de Pascal termines\n");
+	if(status == 0){
+		fprintf(stderr,"Generation et affichage du triangle de Pascal termines\n");
+	}else{
+		fprintf(stderr,"Generation et affichage du triangle de Pascal impossible\n");
+	}
 
   return 0;
 }
