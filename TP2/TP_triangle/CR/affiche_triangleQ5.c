@@ -140,7 +140,8 @@ int main(int argc, char *argv[], char *envp[])
 		#endif
    	fprintf (stderr, "Je n'ai pas reussi a lancer l'execution du fichier %s",prog_suivant);
 	}
-
+	close(t[0]);
+	close(t[1]);
 	waitpid(pGauche, &statusGauche, 0);
 	waitpid(pDroit, &statusDroit, 0);	
 
