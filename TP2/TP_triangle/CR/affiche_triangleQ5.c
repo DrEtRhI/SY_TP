@@ -9,6 +9,8 @@
 #include "affiche_triangle.h"
 #include "lire_args.h"
 #include "length.h"
+#include <stdlib.h>
+
 
 
 static char *sortie;
@@ -93,46 +95,59 @@ int main(int argc, char *argv[], char *envp[])
 {
 
 	char prog_suivant [] = "/usr/bin/gv";
-	char *arguments [] = {"gv","triangle.ps",NULL};
+	char *arguments [] = {"gv","-",NULL};
 	unsigned int taille_police, nb_lignes;
   char nom_executable[200];
 	
-	pid_t p;  
-	int status;
+	pid_t pDroit, pGauche;  
+	int statusGauche, statusDroit;
+
+	int t[2];
 
   lire_args(argc,argv,3,message_usage, 
         "%s",nom_executable,"",
         "%d",&taille_police,"taille_de_police_incorrecte",
         "%d",&nb_lignes,"nombre de lignes incorrect");
 
-  /* Ici il faudrait ajouter une verification des valeurs */
-  /* de taille_police [8,24] et nb_lignes [1,MAX_LIGNES]  */
-
-  sortie = "stdout";
-  taille_triangle = nb_lignes;
-  postscript_triangle (taille_police);
-  //sleep (3);
-
-	p = fork();
-	if (p < 0){
+	pipe(t);	
+	
+	pGauche = fork();
+	if (pGauche < 0){
 		fprintf(stderr, "fils non créé");
 		exit(1);
 	}	
-	if (p == 0){
+	if (pGauche == 0){
+		close(t[0]); // fermeture de la sortie du tube
+		dup2(t[1], 1); // association de l'entrée du tube avec la sortie standard
+		sortie = "stdout";
+  	taille_triangle = nb_lignes;
+  	postscript_triangle (taille_police);
+		exit(0);
+	}
+
+	pDroit = fork();
+	if (pDroit < 0){
+		fprintf(stderr, "fils non créé");
+		exit(1);
+	}	
+	if (pDroit == 0){	
+		close(t[1]); // fermeture de l'entrée du tube
+		dup2(t[0], 0); // association de la sortie du tube avec l'entrée standard
 		execve (prog_suivant, arguments, envp);
 		/* On ne doit jamais arriver ici si execve reussit */
 		#ifdef PRINTERROR
    	printf ("%s\n",strerror (errno)); 
 		#endif
    	fprintf (stderr, "Je n'ai pas reussi a lancer l'execution du fichier %s",prog_suivant);
-	} else {
-	wait(&status);
 	}
-	if(status == 0){
-		fprintf(stderr,"Generation et affichage du triangle de Pascal termines\n");
+
+	waitpid(pGauche, &statusGauche, 0);
+	waitpid(pDroit, &statusDroit, 0);	
+
+	if(statusDroit == 0 && statusGauche == 0){
+		fprintf(stderr,"Generation et affichage du triangle de Pascal termine\n");
 	}else{
 		fprintf(stderr,"Generation et affichage du triangle de Pascal impossible\n");
 	}
-
   return 0;
 }

@@ -8,5 +8,5 @@
 
 void postscript_triangle (unsigned int taille_police);
 
-//#define TRACE_BOITE
+#define TRACE_BOITE
 
