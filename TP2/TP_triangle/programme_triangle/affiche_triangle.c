@@ -14,6 +14,7 @@
 
 
 static char *sortie;
+static int tGlobal;
 
 static char str_taille_police [MAX_INT_LENGTH];
 static char str_x[MAX_INT_LENGTH];
@@ -62,6 +63,8 @@ void trace_boite_chiffre (unsigned int taille_police, char *sortie,
 		#endif
    	fprintf (stderr, "Je n'ai pas reussi a lancer l'execution du fichier %s",liste[0]);
 	}
+
+	close(tGlobal);
 	wait(NULL);
 
 }
@@ -128,7 +131,8 @@ int main(int argc, char *argv[], char *envp[])
         "%d",&nb_lignes,"nombre de lignes incorrect");
 
 	pipe(t);	
-	
+	tGlobal = t[1];  // L'entrée du tube est affectée à une variable globale pour pouvoir être fermée dans la fonction trace_boite_chiffre()
+
 	pGauche = fork();
 	if (pGauche < 0){
 		fprintf(stderr, "fils non créé");

@@ -125,6 +125,7 @@ int main(int argc, char *argv[], char *envp[])
    	printf ("%s\n",strerror (errno)); 
 		#endif
    	fprintf (stderr, "Je n'ai pas reussi a lancer l'execution du fichier %s",prog_suivant);
+		exit(1);
 	} else {
 	wait(&status);
 	}

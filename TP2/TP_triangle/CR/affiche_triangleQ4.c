@@ -114,6 +114,7 @@ int main(int argc, char *argv[], char *envp[])
 	fsortie = fopen (sortie, "w");
   if (fsortie == NULL){
     fprintf (stderr, "Impossible d'ouvrir le fichier en ecriture\n");
+		exit(1);
   }
 	fclose (fsortie);
 
